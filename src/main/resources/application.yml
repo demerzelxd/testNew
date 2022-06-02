@@ -1,2 +1,28 @@
 server:
-  port: 8080
+  port: 8081
+  servlet:
+    context-path: /api
+spring:
+  application:
+    name: my-boot
+  datasource:
+    url: jdbc:postgresql://23.95.17.10:5432/testdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: Getschwifty42
+    driver-class-name: org.postgresql.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  # 不返回null值
+  jackson:
+    default-property-inclusion: non_null
+# mybatisplus配置
+mybatis-plus:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  configuration:
+    # 下划线风格映射到驼峰命名（便于数据库字段映射到java类属性）
+    map-underscore-to-camel-case: true
+  type-aliases-package: cn.me.myboot.model.po.*
+# 日志显示
+logging:
+  level:
+    root: info
+    cn.me.myboot.mapper: debug
