@@ -2,8 +2,12 @@ package cn.me.myboot.model.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -14,6 +18,9 @@ import lombok.EqualsAndHashCode;
  * @since 2022-06-02
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @TableName("tb_user")
 public class User implements Serializable {
@@ -34,6 +41,5 @@ public class User implements Serializable {
      * 密码
      */
     private String password;
-
 
 }
