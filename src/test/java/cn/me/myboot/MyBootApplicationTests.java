@@ -13,7 +13,31 @@ class MyBootApplicationTests {
     private StringEncryptor encryptor;
 
     @Test
-    void contextLoads() {
+    void testJasypt() {
+        String password = "12345";
+        String encryptPwd = encryptor.encrypt(password);
+        System.out.println("加密: " + encryptPwd);
+        System.out.println("解密: " + encryptor.decrypt(encryptPwd));
+    }
+
+    @Test
+    void testHutool() {
+        String password = "12345";
+        String encryptPwd = encryptor.encrypt(password);
+        System.out.println("加密: " + encryptPwd);
+        System.out.println("解密: " + encryptor.decrypt(encryptPwd));
+    }
+
+    @Test
+    void testCommons() {
+        String password = "12345";
+        String encryptPwd = encryptor.encrypt(password);
+        System.out.println("加密: " + encryptPwd);
+        System.out.println("解密: " + encryptor.decrypt(encryptPwd));
+    }
+
+    @Test
+    void testGuava() {
         String password = "12345";
         String encryptPwd = encryptor.encrypt(password);
         System.out.println("加密: " + encryptPwd);
