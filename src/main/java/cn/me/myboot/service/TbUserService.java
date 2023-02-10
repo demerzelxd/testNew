@@ -11,4 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TbUserService extends IService<TbUser> {
 
+    void listUserDetail(Integer pageIndex, Integer pageSize, Boolean selectFlag);
+
 }
