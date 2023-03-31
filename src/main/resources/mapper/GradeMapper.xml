@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.me.myboot.mapper.GradeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.me.myboot.model.po.GradePO">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="subject_id" property="subjectId" />
+        <result column="score_num" property="scoreNum" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, subject_id, score_num, create_time, create_user, update_time, update_user, del_flag
+    </sql>
+
+    <!-- ${ew.customSqlSegment}表示queryWrapper取代where -->
+    <select id="listUserGradeDetail" resultType="cn.me.myboot.model.dto.UserGradeDetailDTO">
+        SELECT
+            g.user_id       userId,
+            u.user_name userName,
+            g.subject_id subjectId,
+            s.subject_name subjectName,
+            g.score_num scoreNum
+        FROM tb_grade g
+        LEFT JOIN tb_user u ON g.user_id = u.id
+        LEFT JOIN tb_subject s ON g.subject_id = s.id
+        ${ew.customSqlSegment}
+    </select>
+
+</mapper>

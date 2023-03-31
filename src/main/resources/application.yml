@@ -6,9 +6,9 @@ spring:
   application:
     name: my-boot
   datasource:
-    url: jdbc:postgresql://23.95.17.10:5432/testdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
-    username: ENC(dxq/F7XQYbyajfT7cH6IMfVyguopjZwpPOOePu2EmSVjGGKPwk8EHPE1+KdTa0R6)
-    password: ENC(AQcu1wpollLDvjQy4RLCxotsA3Cm58JDEfbzlgOlMm71+lbEfLp+NKsHNNrCUo2R)
+    url: jdbc:postgresql://52.194.25.20:5432/test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    username: ENC(be3N0H9V9zmj6MTzXfHkkA==)
+    password: ENC(Aw88PLDWGFS743P2VW17d745EQefmpxR)
     driver-class-name: org.postgresql.Driver
     type: com.alibaba.druid.pool.DruidDataSource
   # 不返回null值
@@ -31,3 +31,5 @@ jasypt:
   encryptor:
     #加密秘钥，myBoot md5后base64
     password: M2M4MzhiOTEyNTZhNTFmODQ4NGMwYjllOTBjM2M5ZmM=
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator

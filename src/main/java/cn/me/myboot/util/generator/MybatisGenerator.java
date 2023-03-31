@@ -1,117 +1,79 @@
 package cn.me.myboot.util.generator;
 
-import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.InjectionConfig;
-import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
-import com.baomidou.mybatisplus.generator.config.FileOutConfig;
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
-import com.baomidou.mybatisplus.generator.config.TemplateConfig;
-import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.generator.FastAutoGenerator;
+import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.Collections;
 
-// 演示例子，执行 main 方法控制台输入模块表名回车自动生成对应项目目录中
+/**
+ * mybatis生成器
+ *
+ * @author 李心达
+ */
 public class MybatisGenerator {
-
-    /**
-     * 读取控制台内容
-     */
-    public static String scanner(String tip) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("请输入" + tip + "：");
-        if (scanner.hasNext()) {
-            String ipt = scanner.next();
-            if (StringUtils.isNotBlank(ipt)) {
-                return ipt;
-            }
-        }
-        throw new MybatisPlusException("请输入正确的" + tip + "！");
-    }
-
     public static void main(String[] args) {
-        // 代码生成器
-        AutoGenerator mpg = new AutoGenerator();
-
-        // 全局配置
-        GlobalConfig gc = new GlobalConfig();
-        String projectPath = System.getProperty("user.dir");
-        gc.setOutputDir(projectPath + "/src/main/java");
-//        gc.setOutputDir("D:\\test");
-        gc.setAuthor("Giskard");
-        gc.setOpen(false);
-        // gc.setSwagger2(true); 实体属性 Swagger2 注解
-        gc.setServiceName("%sService");
-        mpg.setGlobalConfig(gc);
-
         // 数据源配置
-        DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:postgresql://23.95.17.10:5432/testdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC");
-        // dsc.setSchemaName("public");
-        dsc.setDriverName("org.postgresql.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("Getschwifty42");
-        mpg.setDataSource(dsc);
-
-        // 包配置
-        PackageConfig pc = new PackageConfig();
-        pc.setParent("cn.me.myboot");
-        pc.setEntity("model.po");
-        mpg.setPackageInfo(pc);
-
-        // 自定义配置
-        InjectionConfig cfg = new InjectionConfig() {
-            @Override
-            public void initMap() {
-                // to do nothing
-            }
-        };
-
-        // 如果模板引擎是 freemarker
-        String templatePath = "/templates/mapper.xml.ftl";
-        // 如果模板引擎是 velocity
-        // String templatePath = "/templates/mapper.xml.vm";
-
-        // 自定义输出配置
-        List<FileOutConfig> focList = new ArrayList<>();
-        // 自定义配置会被优先输出
-        focList.add(new FileOutConfig(templatePath) {
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-                // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                return projectPath + "/src/main/resources/mapper/"
-                        + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
-            }
-        });
-
-        cfg.setFileOutConfigList(focList);
-        mpg.setCfg(cfg);
-
-        // 配置模板
-        TemplateConfig templateConfig = new TemplateConfig();
-
-        templateConfig.setXml(null);
-        mpg.setTemplate(templateConfig);
-
-        // 策略配置
-        StrategyConfig strategy = new StrategyConfig();
-        strategy.setNaming(NamingStrategy.underline_to_camel);
-        strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategy.setEntityLombokModel(true);
-        strategy.setRestControllerStyle(true);
-        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
-        strategy.setControllerMappingHyphenStyle(true);
-        strategy.setTablePrefix("tb_");
-        mpg.setStrategy(strategy);
-        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
-        mpg.execute();
+        FastAutoGenerator.create("jdbc:postgresql://52.194.25.20:5432/test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC",
+                        "giskard", "Getschwifty42!")
+                .globalConfig(builder -> builder.disableOpenDir()
+                        .outputDir(System.getProperty("user.dir") + "/src/main/java")
+                        .author("lixinda")
+                        // .enableKotlin()
+                        .enableSwagger()
+                        // .dateType(DateType.TIME_PACK)
+                        .commentDate("yyyy-MM-dd HH:mm:ss"))
+                .packageConfig(builder -> builder.parent("cn.me")
+                        .moduleName("myboot")
+                        .entity("model.po")
+                        .service("service")
+                        .serviceImpl("service.impl")
+                        .mapper("mapper")
+                        .xml("mapper.xml")
+                        .controller("controller")
+                        .pathInfo(Collections.singletonMap(OutputFile.xml, System.getProperty("user.dir") + "/src/main/resources/mapper")))
+                .strategyConfig(builder -> builder.addInclude("tb_user", "tb_subject", "tb_grade")
+                        .addTablePrefix("tb_")
+                        .entityBuilder()
+                        // .superClass(BaseEntity.class)
+                        // .disableSerialVersionUID()
+                        .enableFileOverride()
+                        .enableChainModel()
+                        .enableLombok()
+                        // .enableRemoveIsPrefix()
+                        .enableTableFieldAnnotation()
+                        // .enableActiveRecord()
+                        // .versionColumnName("version")
+                        // .versionPropertyName("version")
+                        // .logicDeleteColumnName("del_flag")
+                        // .logicDeletePropertyName("delFlag")
+                        // .naming(NamingStrategy.underline_to_camel)
+                        // .columnNaming()
+                        .formatFileName("%sPO")
+                        .controllerBuilder()
+                        .enableFileOverride()
+                        .enableHyphenStyle()
+                        .enableRestStyle()
+                        .formatFileName("%sController")
+                        .mapperBuilder()
+                        .formatMapperFileName("%sMapper")
+                        .formatXmlFileName("%sMapper")
+                        .superClass(BaseMapper.class)
+                        .enableBaseResultMap()
+                        .enableBaseColumnList()
+                        .enableFileOverride()
+                        .serviceBuilder()
+                        .formatServiceFileName("%sService")
+                        .formatServiceImplFileName("%sServiceImpl")
+                        .enableFileOverride())
+                .templateConfig(builder -> builder.entity("/templates/entity.java")
+                        .service("/templates/service.java")
+                        .serviceImpl("/templates/serviceImpl.java")
+                        .mapper("/templates/mapper.java")
+                        .controller("/templates/controller.java")
+                        .xml("/templates/mapper.xml"))
+                .templateEngine(new FreemarkerTemplateEngine())
+                .execute();
     }
 }
